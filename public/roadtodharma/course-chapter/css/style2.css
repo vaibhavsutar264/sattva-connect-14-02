@@ -1,0 +1,73 @@
+/*hitesh css strt*/
+.pl20 {
+    padding-left: 20px!important;
+}
+.audioimg-div img {
+    width: 100%;
+    max-height: 410px;
+}
+.lesson-accord a.collapsed:after {
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
+    content: "\f078";
+    right: 15px;
+    }
+.lesson-accord a:after {
+    font-family: "Font Awesome 5 Free"; 
+    font-weight: 900;
+    content: "\f077";
+    right: 15px;
+    }
+.customer-support textarea {
+    overflow: scroll;
+    height: 70px;
+}
+/*hitesh css end*/
+
+/*chapter css............*/
+/*video lock*/
+.video-lock:after {
+    content: "";
+    background: #00000021;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+.video-lock{
+position: relative;
+}
+.video-lock h4{
+    position: absolute;
+    text-align: center;
+    width: 50%;
+    left: 26%;
+    top: 40%;
+    color: #fff;
+    font-weight: 500;
+    z-index: 1;
+    line-height: 38px;
+
+}
+
+.chapter-box .sec-quotes{padding: 40px 15px;background: rgba(92, 28, 114, 0.04);border-radius: 5px;margin-bottom: 30px;}
+
+
+@media only screen and (max-width: 575px) {
+    .video-lock h4 {
+    position: absolute;
+    text-align: center;
+    top: 30%;
+    width: 90%;
+    left: 6%;
+    color: #fff;
+    font-weight: 500;
+    z-index: 1;
+    font-size: 16px;
+    line-height: 20px;
+
+}
+}
+/*video lock*/
+/*chapter css end.........*/

@@ -1,0 +1,150 @@
+/*hitesh css strt*/
+@font-face {
+    font-family: 'Trajan Pro';
+    src: url('../font/trajan/TrajanPro-Bold.woff2') format('woff2'),
+        url('../font/trajan/TrajanPro-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Trajan Pro';
+    src: url('../font/trajan/TrajanPro-Regular.woff2') format('woff2'),
+        url('../font/trajan/TrajanPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+b, strong {
+    font-weight: bold;
+}
+/*.sec-dharma .dharma-left{
+    position: relative;
+    z-index: 1;
+    background: url(../img/Black-Poster-with-more.png);
+    background-position: bottom right;
+    background-size: contain;
+    padding: 90px 60px;
+}*/
+.sec-dharma {
+    position: relative;
+    z-index: 1;
+    background: url(../img/Black-Poster-with-more2.png);
+    background-position: bottom left;
+    background-size: 100% 100%;
+    padding: 90px 60px;
+    height: 450px;
+}
+.sec-dharma .banner h1 {
+    font-size: 60px;
+    color: #fff;
+    font-weight: 600;
+}
+.sec-dharma .banner h1 strong {
+    font-size: 85px;
+    line-height: 6.2rem;
+    color: #5c1c72;
+    font-family: fantasy;
+}
+.sec-dharma .banner h1 strong:nth-child(2) {
+    font-size: 120px;
+}
+.course-rating.banner strong {
+    font-size: 22px;
+    color: #fff;
+}
+.sec-dharma .course-rating span.course-price, .sec-dharma .course-rating span.course-duration {
+    font-size: 1.5rem;
+    margin-right: 0;
+    font-weight: 500;
+}
+.sec-dharma .course-rating span.course-duration i{
+    font-size: 22px;
+}
+
+.course_details.pb-0 {
+    padding-top: 60px;
+}
+.sec-dharma h4{
+	font-size:50px;
+	margin-bottom:15px;
+	line-height:100%;
+	letter-spacing:0.5px;
+	font-weight:600;
+}
+.sec-dharma p{
+    font-size:18px;
+    margin-bottom:15px;
+    color:#fff;
+    line-height: 40px;
+    display: inline-flex;
+}
+.dharma-right {
+    color: #fff;
+}
+.unlock-left{
+    position: relative;
+    z-index: 1;
+    background: url(../img/unlock-left-bg.png);
+    background-position: bottom right;
+    background-size: cover;
+    padding: 90px 60px;
+}
+.unlockinner-left {
+    max-width: 300px;
+    margin: 0 auto;
+    color: #fff;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.25);
+    padding: 20px 60px;
+}
+.unlock-right {
+    background: #7b0748;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.unlock-right .card-course-btns {
+    display: grid;
+}
+.unlock-right .card-course-btns a{
+    margin-bottom: 15px;
+}
+.sec-quantum {
+    text-align: center;
+    padding: 15px;
+    background: url(../img/sec-quantum-bg.png);
+    background-color: rgba(255, 255, 255, 0.9);
+    background-blend-mode: color;
+}
+.quantom-text{
+    font-size: 40px;
+    font-family: TrajanPro;
+    font-family: 'TrajanProRegular';
+}
+.sec-footer {
+    text-align: center;
+    padding: 50px 70px;
+}
+.footimg {
+    width: 100px;
+    margin: 0 auto;
+}
+.footimg img {
+    width: 100%;
+}
+.foot-text {
+    padding-top: 50px;
+}
+.road-quotes p span{
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+}
+.road-quotes p span img{
+    width: 50px;
+    
+}
+/*hitesh css end*/
+
+
