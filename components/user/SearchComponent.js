@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import ReactTooltip from 'react-tooltip';
-import SimpleReactValidator from 'simple-react-validator';
-import { InfiniteScroll } from 'react-simple-infinite-scroll';
-import { Multiselect } from 'multiselect-react-dropdown';
+import React, { Component } from "react";
+import axios from "axios";
+import ReactTooltip from "react-tooltip";
+import SimpleReactValidator from "simple-react-validator";
+import { InfiniteScroll } from "react-simple-infinite-scroll";
+import { Multiselect } from "multiselect-react-dropdown";
 import {
   apiRoute,
   getApiHeader,
   getUserId,
   getLocalStorageAuth,
-} from '../../utils/helpers';
-import VideoServices from '../../services/videoServices';
-import VideoDetails from '../../components/user/VideoDetails';
-import Layout from '../../components/user/Layout';
-import { SearchContext } from './ContextSearch';
+} from "../../utils/helpers";
+import VideoServices from "../../services/videoServices";
+import VideoDetails from "../../components/user/VideoDetails";
+import Layout from "../../components/user/Layout";
+import { SearchContext } from "./ContextSearch";
 
 export default class SearchComponent extends Component {
   static contextType = SearchContext;
@@ -27,15 +27,15 @@ export default class SearchComponent extends Component {
       styleType: [],
       intentions: [],
       styles: [],
-      searchInput: '',
-      duration: '',
-      durationStart: '',
-      selectedTeacher: '',
-      selectedStyle: '',
-      selectedStyleType: '',
-      selectedTeacherText: '',
-      selectedStyleText: '',
-      selectedStyleTypeText: '',
+      searchInput: "",
+      duration: "",
+      durationStart: "",
+      selectedTeacher: "",
+      selectedStyle: "",
+      selectedStyleType: "",
+      selectedTeacherText: "",
+      selectedStyleText: "",
+      selectedStyleTypeText: "",
       selectedIntention: [],
       selectedIntentionType: [],
       searchInputOptions: [],
@@ -47,8 +47,8 @@ export default class SearchComponent extends Component {
       hasMore: true,
       cursor: 0,
       totalCount: 0,
-      surprisemeVideo: '',
-      showVideos: false
+      surprisemeVideo: "",
+      showVideos: false,
     };
     this.searchValidation = new SimpleReactValidator();
     this.onChange = this.onChange.bind(this);
@@ -59,7 +59,6 @@ export default class SearchComponent extends Component {
     this.setState({ loading: true });
     VideoServices.fetchSearchVideos(data).then((res) => {
       let allVideos = [...videos, ...res.data.videos];
-      console.log(allVideos)
       this.setState({
         videos: allVideos,
         loading: false,
@@ -71,7 +70,21 @@ export default class SearchComponent extends Component {
   };
   componentDidMount() {
     // let {si,st} = this.context;
-    let { si, cFstyle, cFstyle2, cFilterForm, cFteacher, cFduration, cFdurationStart, cFintentions, cFstyleId, cFteacherId, cFstyleId2, cShowStyle, cFintentionsId } = this.context;
+    let {
+      si,
+      cFstyle,
+      cFstyle2,
+      cFilterForm,
+      cFteacher,
+      cFduration,
+      cFdurationStart,
+      cFintentions,
+      cFstyleId,
+      cFteacherId,
+      cFstyleId2,
+      cShowStyle,
+      cFintentionsId,
+    } = this.context;
     window.scrollTo(0, 0);
 
     const requestOptions = {
@@ -79,17 +92,17 @@ export default class SearchComponent extends Component {
     };
 
     axios
-      .get(apiRoute('user-dashboard/get-all-video-teacher'), requestOptions)
+      .get(apiRoute("user-dashboard/get-all-video-teacher"), requestOptions)
       .then((res) => {
         this.setState({ teachers: res.data });
       });
     axios
-      .get(apiRoute('user-dashboard/get-all-videos-style'), requestOptions)
+      .get(apiRoute("user-dashboard/get-all-videos-style"), requestOptions)
       .then((res) => {
         this.setState({ styleType: res.data });
       });
     axios
-      .get(apiRoute('user-dashboard/get-all-videos-intention'), requestOptions)
+      .get(apiRoute("user-dashboard/get-all-videos-intention"), requestOptions)
       .then((res) => {
         this.setState({ intentions: res.data });
       });
@@ -99,17 +112,17 @@ export default class SearchComponent extends Component {
       var isteacherExclusive = false;
     }
     if (this.props.style !== undefined) {
-      console.log('first cond')
+      console.log("first cond");
       this.setState({
         selectedStyleType: this.props.style,
         showFilterForm: true,
         showStyle: true,
       });
       const details = {
-        searchInput: '',
-        duration: '',
-        durationStart: '',
-        teacher: '',
+        searchInput: "",
+        duration: "",
+        durationStart: "",
+        teacher: "",
         styleType: this.props.style,
         // styleType: cFstyleId,
         intentionType: [],
@@ -126,7 +139,7 @@ export default class SearchComponent extends Component {
 
       axios
         .get(
-          apiRoute('user-dashboard/get-styles/' + this.props.style),
+          apiRoute("user-dashboard/get-styles/" + this.props.style),
           requestOptions
         )
         .then((res) => {
@@ -136,7 +149,7 @@ export default class SearchComponent extends Component {
 
       this.fetchSearchVideos(details, [], stateValues);
     } else {
-      console.log('last cond')
+      console.log("last cond");
       this.setState({
         teacherExclusive: isteacherExclusive,
       });
@@ -166,7 +179,7 @@ export default class SearchComponent extends Component {
     if (auth) {
       const userId = auth.userDetails.id;
       axios
-        .get(apiRoute('get-teacher-access/' + btoa(userId)), requestOptions)
+        .get(apiRoute("get-teacher-access/" + btoa(userId)), requestOptions)
         .then((res) => {
           this.setState({ accessDetails: res.data });
         });
@@ -176,7 +189,20 @@ export default class SearchComponent extends Component {
     const requestOptions = {
       headers: getApiHeader(true),
     };
-    let { si, cFstyle, cFstyle2, cFilterForm, cFteacher, cFduration, cFintentions, cFstyleId, cFteacherId, cFstyleId2, cFdurationStart, cFintentionsId } = this.context;
+    let {
+      si,
+      cFstyle,
+      cFstyle2,
+      cFilterForm,
+      cFteacher,
+      cFduration,
+      cFintentions,
+      cFstyleId,
+      cFteacherId,
+      cFstyleId2,
+      cFdurationStart,
+      cFintentionsId,
+    } = this.context;
     // let {si,st} = this.context;
     const details = {
       searchInput: si,
@@ -196,7 +222,6 @@ export default class SearchComponent extends Component {
       limit: 40,
       skip: 0,
     };
-    console.log(details)
     this.fetchSearchVideos(details, [], this.state);
   };
 
@@ -223,25 +248,37 @@ export default class SearchComponent extends Component {
     selectedList.forEach((e) => {
       selectedIds.push(e.id);
     });
+    // console.log(selectedIds);
     var index = selectedIds.indexOf(removedItem);
     if (index > -1) {
       selectedIds.splice(index, 1);
     }
+    console.log(selectedIds);
     this.setState({ selectedIntention: selectedIds });
     changeFintentionsId(selectedIds);
-    changeFintentions(selectedIds);
+    changeFintentions(selectedList);
     setTimeout(() => {
       this.filterData();
     }, 5);
   };
 
   onChange(e) {
-    let { changeFstyle, changeFstyle2, changeFteacher, changeFstyleId, changeFteacherId, cFstyleId, changeFstyleId2, changeShowStyle, changeStylesData } = this.context;
+    let {
+      changeFstyle,
+      changeFstyle2,
+      changeFteacher,
+      changeFstyleId,
+      changeFteacherId,
+      cFstyleId,
+      changeFstyleId2,
+      changeShowStyle,
+      changeStylesData,
+    } = this.context;
     // let {setStyle,setTeacher,setDuration,setIntentions} = this.context;
 
     const index = e.target.selectedIndex;
     const optionElement = e.target.childNodes[index];
-    const selectedName = optionElement.getAttribute('itemName');
+    const selectedName = optionElement.getAttribute("itemName");
 
     this.setState({ [e.target.name]: e.target.value });
 
@@ -249,23 +286,23 @@ export default class SearchComponent extends Component {
       this.filterData();
     }, 5);
 
-    if (e.target.name === 'selectedStyleType') {
-      if (e.target.value !== '') {
+    if (e.target.name === "selectedStyleType") {
+      if (e.target.value !== "") {
         this.setState({
           showStyle: true,
-          selectedStyle: '',
+          selectedStyle: "",
           selectedStyleTypeText: selectedName,
         });
-        changeFstyle(selectedName)
+        changeFstyle(selectedName);
         changeFstyleId(e.target.value);
         changeShowStyle(true);
-        changeFstyleId2('');
+        changeFstyleId2("");
         const requestOptions = {
           headers: getApiHeader(true),
         };
         axios
           .get(
-            apiRoute('user-dashboard/get-styles/' + e.target.value),
+            apiRoute("user-dashboard/get-styles/" + e.target.value),
             requestOptions
           )
           .then((res) => {
@@ -276,30 +313,29 @@ export default class SearchComponent extends Component {
         this.setState({
           showStyle: false,
           styles: [],
-          selectedStyle: '',
-          selectedStyleTypeText: '',
+          selectedStyle: "",
+          selectedStyleTypeText: "",
         });
       }
     }
-    if (e.target.name === 'selectedStyle') {
-      if (e.target.value !== '') {
+    if (e.target.name === "selectedStyle") {
+      if (e.target.value !== "") {
         this.setState({ selectedStyleText: selectedName });
         // setStyle(selectedName);
         changeFstyle2(selectedName);
         changeFstyleId2(e.target.value);
-        console.log(e.target.value);
       } else {
-        this.setState({ selectedStyleText: '' });
+        this.setState({ selectedStyleText: "" });
       }
     }
-    if (e.target.name === 'selectedTeacher') {
-      if (e.target.value !== '') {
+    if (e.target.name === "selectedTeacher") {
+      if (e.target.value !== "") {
         this.setState({ selectedTeacherText: selectedName });
-        changeFteacher(selectedName)
+        changeFteacher(selectedName);
         changeFteacherId(e.target.value);
       } else {
-        this.setState({ selectedTeacherText: '' });
-        changeFteacher('');
+        this.setState({ selectedTeacherText: "" });
+        changeFteacher("");
       }
     }
   }
@@ -308,9 +344,7 @@ export default class SearchComponent extends Component {
     let { changeFduration, changeFdurationStart } = this.context;
     const index = e.target.selectedIndex;
     const optionElement = e.target.childNodes[index];
-    const durationStart = optionElement.getAttribute('fromVal');
-    console.log(durationStart);
-    console.log(e.target.value)
+    const durationStart = optionElement.getAttribute("fromVal");
     this.setState({ duration: e.target.value });
     changeFduration(e.target.value);
     changeFdurationStart(durationStart);
@@ -342,7 +376,7 @@ export default class SearchComponent extends Component {
     st(e.target.value);
 
     // this.setState({ searchInput: e.target.value });
-    if (e.target.value == '') {
+    if (e.target.value == "") {
       setTimeout(() => {
         this.filterData();
       }, 10);
@@ -357,32 +391,69 @@ export default class SearchComponent extends Component {
 
   clearAllFilter = (e) => {
     // let {si,st} = this.context;
-    let { changeFteacher, st, changeFstyle, changeFstyle2, changeFintentions, changeFduration, changeFstyleId, changeFteacherId, changeShowStyle } = this.context;
-    st('');
-    changeFteacher('');
-    changeFstyle2('');
-    changeFstyle('');
-    changeFintentions('');
-    changeFduration('');
-    changeFstyleId('');
-    changeFteacherId('');
+    let {
+      changeFteacher,
+      st,
+      changeFstyle,
+      changeFstyle2,
+      changeFintentions,
+      changeFduration,
+      changeFstyleId,
+      changeFteacherId,
+      changeShowStyle,
+    } = this.context;
+    st("");
+    changeFteacher("");
+    changeFstyle2("");
+    changeFstyle("");
+    // changeFintentions("");
+    changeFduration("");
+    changeFstyleId("");
+    changeFteacherId("");
     changeShowStyle(false);
     this.setState({
-      searchInput: '',
-      duration: '',
-      durationStart: '',
-      selectedTeacher: '',
-      selectedStyleType: '',
-      selectedTeacherText: '',
-      selectedStyleText: '',
-      selectedStyleTypeText: '',
+      searchInput: "",
+      duration: "",
+      durationStart: "",
+      selectedTeacher: "",
+      selectedStyleType: "",
+      selectedTeacherText: "",
+      selectedStyleText: "",
+      selectedStyleTypeText: "",
+      // selectedIntention: [],
+      selectedStyle: "",
+      // selectedIntentionType: [],
+    });
+    // if (this.state.selectedIntention.length > 0) {
+    //   this.multiselectRef.current.resetSelectedValues();
+    // }
+    setTimeout(() => {
+      this.filterData();
+    }, 5);
+  };
+  clearAllIntentions = (e) => {
+    // let {si,st} = this.context;
+    let {
+      changeFteacher,
+      st,
+      changeFstyle,
+      changeFstyle2,
+      changeFintentions,
+      changeFduration,
+      changeFstyleId,
+      changeFteacherId,
+      changeShowStyle,
+    } = this.context;
+
+    changeFintentions("");
+    
+    this.setState({
       selectedIntention: [],
-      selectedStyle: '',
       selectedIntentionType: [],
     });
-    if (this.state.selectedIntention.length > 0) {
-      this.multiselectRef.current.resetSelectedValues();
-    }
+    // if (this.state.selectedIntention.length > 0) {
+    //   this.multiselectRef.current.resetSelectedValues();
+    // }
     setTimeout(() => {
       this.filterData();
     }, 5);
@@ -408,8 +479,8 @@ export default class SearchComponent extends Component {
 
   removeStyle = (e) => {
     let { changeFstyle2 } = this.context;
-    this.setState({ selectedStyle: '', selectedStyleText: '' });
-    changeFstyle2('');
+    this.setState({ selectedStyle: "", selectedStyleText: "" });
+    changeFstyle2("");
     setTimeout(() => {
       this.filterData();
     }, 8);
@@ -417,9 +488,9 @@ export default class SearchComponent extends Component {
 
   removeStyleType = (e) => {
     let { changeFstyle, changeFstyleId, changeShowStyle } = this.context;
-    this.setState({ selectedStyleType: '', selectedStyleTypeText: '' });
-    changeFstyle('');
-    changeFstyleId('');
+    this.setState({ selectedStyleType: "", selectedStyleTypeText: "" });
+    changeFstyle("");
+    changeFstyleId("");
     changeShowStyle(false);
     setTimeout(() => {
       this.filterData();
@@ -428,9 +499,9 @@ export default class SearchComponent extends Component {
 
   removeTeacther = (e) => {
     let { changeFteacher, changeFteacherId } = this.context;
-    this.setState({ selectedTeacher: '', selectedTeacherText: '' });
-    changeFteacher('');
-    changeFteacherId('');
+    this.setState({ selectedTeacher: "", selectedTeacherText: "" });
+    changeFteacher("");
+    changeFteacherId("");
     setTimeout(() => {
       this.filterData();
     }, 8);
@@ -445,25 +516,35 @@ export default class SearchComponent extends Component {
     }, 8);
   };
   surpriseMe = () => {
-    const requestOptions = { headers: getApiHeader(true), };
-    axios
-      .get(apiRoute('get-surprise-me', requestOptions))
-      .then((res) => {
-        console.log(res.data);
-        // this.setState({ surprisemeVideo: "https:\/\/player.vimeo.com\/video\/278730789?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=129872" });
-        this.setState({ surprisemeVideo: res.data });
-      });
-  }
+    const requestOptions = { headers: getApiHeader(true) };
+    axios.get(apiRoute("get-surprise-me", requestOptions)).then((res) => {
+      // this.setState({ surprisemeVideo: "https:\/\/player.vimeo.com\/video\/278730789?title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=129872" });
+      this.setState({ surprisemeVideo: res.data });
+    });
+  };
   render() {
-    let { si, cFstyle, cFstyle2, cFilterForm, cFteacher, cFduration, cFdurationStart, cFintentions, cFstyleId, cFteacherId, cFstyleId2, cShowStyle, cStylesData, cFintentionsId } = this.context;
+    let {
+      si,
+      cFstyle,
+      cFstyle2,
+      cFilterForm,
+      cFteacher,
+      cFduration,
+      cFdurationStart,
+      cFintentions,
+      cFstyleId,
+      cFteacherId,
+      cFstyleId2,
+      cShowStyle,
+      cStylesData,
+      cFintentionsId,
+    } = this.context;
     // let {si,style,teacher,duration,intentions} = this.context;
-    console.log(cStylesData);
-    console.log(cFduration)
-    console.log(cFdurationStart)
-    console.log(cFstyle)
+    
+    
     return (
       <Layout loading={this.state.loading}>
-        <main className='admin-content light-purplebg'>
+        <main className="admin-content light-purplebg">
           {/* <section
             className='inner-banner'
             style={{
@@ -480,84 +561,142 @@ export default class SearchComponent extends Component {
             </div>
           </section> */}
           <section
-            className='inner-banner mb-0 mob-min-height-80vw'
+            className="inner-banner mb-0 mob-min-height-80vw"
             style={{
-              background: 'url(/../images/bg-connect.jpg)',
-              backgroundSize: 'cover',
-
+              background: "url(/../images/bg-connect.jpg)",
+              backgroundSize: "cover",
             }}
           >
-            <div className='row d-none-mob' style={{ width: '100%' }}>
-              <div className='col-md-8 pl-0 pr-0 bannner-box' style={{ height: '600px' }}>
-                <img className='grid-image' src="../../images/search-grid.jpeg" alt="" />
+            <div className="row d-none-mob" style={{ width: "100%" }}>
+              <div
+                className="col-md-8 pl-0 pr-0 bannner-box"
+                style={{ height: "600px" }}
+              >
+                <img
+                  className="grid-image"
+                  src="../../images/search-grid.jpeg"
+                  alt=""
+                />
               </div>
-              <div className='col-md-4 pl-0 pr-0' style={{ height: '600px' }}>
-                <div style={{ height: '300px', width: '100%' }}>
-                  <img className='grid-image' src="../../images/1.png" alt="" />
+              <div className="col-md-4 pl-0 pr-0" style={{ height: "600px" }}>
+                <div style={{ height: "300px", width: "100%" }}>
+                  <img className="grid-image" src="../../images/1.png" alt="" />
                 </div>
-                <div style={{ height: '300px', width: '100%' }}>
-                  <img className='grid-image' src="../../images/anand-teaching.jpg" alt="" />
+                <div style={{ height: "300px", width: "100%" }}>
+                  <img
+                    className="grid-image"
+                    src="../../images/anand-teaching.jpg"
+                    alt=""
+                  />
                 </div>
               </div>
             </div>
-            <div className='abs-center'>
-              <div className='text-center text-white'>
-                <h1 className='revamp-signature-heading mb-0'>Yoga Library </h1>
-                <p className='revamp-banner-para w-auto'>Where You Find All Your Practice Essentials</p>
+            <div className="abs-center">
+              <div className="text-center text-white">
+                <h1 className="revamp-signature-heading mb-0">Yoga Library </h1>
+                <p className="revamp-banner-para w-auto">
+                  Where You Find All Your Practice Essentials
+                </p>
               </div>
             </div>
           </section>
-          <section className='sec sec-inabout bg-white'>
-            <div className='container'>
-              <div className='row'>
-                <div className='col-md-12 text-center'>
-                  <p className='revamp-para'>Browse our 1000+ classes on all aspects of Yoga – Asana, Pranayama, Kriya, Mantra, Meditation, Wisdom and more. Yogic wisdom and technologies to elevate your consciousness and transform your life. New classes uploaded weekly. Yoga where you are!</p>
+          <section className="sec sec-inabout bg-white">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12 text-center">
+                  <p className="revamp-para">
+                    Browse our 1000+ classes on all aspects of Yoga – Asana,
+                    Pranayama, Kriya, Mantra, Meditation, Wisdom and more. Yogic
+                    wisdom and technologies to elevate your consciousness and
+                    transform your life. New classes uploaded weekly. Yoga where
+                    you are!
+                  </p>
                 </div>
               </div>
             </div>
           </section>
-          <section className='sec pt-4'>
-
-            <div className='blog_outer login_blog'>
-              <div className='row'>
-                <div className='col-md-8 pl-50'>
-                  <div className='searchbar flex-dir d-flex align-items-center'>
+          <section className="sec pt-4">
+            <div className="blog_outer login_blog">
+              <div className="row">
+                <div className="col-md-8 pl-50">
+                  <div className="searchbar flex-dir d-flex align-items-center">
                     <form
                       onSubmit={this.handleSearchForm}
-                      className='searchbar-bar d-flex'
+                      className="searchbar-bar d-flex"
                     >
-                      <div className='searchbar-form-alt'>
+                      <div className="searchbar-form-alt">
                         <input
-                          type='text'
-                          placeholder='Find your class'
-                          autoComplete='off'
-                          name='searchInput'
+                          type="text"
+                          placeholder="Find your class"
+                          autoComplete="off"
+                          name="searchInput"
                           value={si}
                           onChange={this.changeFinterInput}
                           className="flex-1 search-input"
                         />
-                        <button className='btn btn-sm mr-2 m-mb-2' type='submit'>
+                        <button
+                          className="btn btn-sm mr-2 m-mb-2"
+                          type="submit"
+                        >
                           Search
                         </button>
                       </div>
                     </form>
-                    <button onClick={this.surpriseMe} class="btn btn-sm mw-150 desk-ml-4" data-toggle="modal" data-target="#surpriseme">Surprise Me</button>
-                    <div class="modal fade" id="surpriseme" tabindex="-1" role="dialog" aria-labelledby="testimonial2Title" aria-hidden="true">
-                      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <button
+                      onClick={this.surpriseMe}
+                      class="btn btn-sm mw-150 desk-ml-4"
+                      data-toggle="modal"
+                      data-target="#surpriseme"
+                    >
+                      Surprise Me
+                    </button>
+                    <div
+                      class="modal fade"
+                      id="surpriseme"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="testimonial2Title"
+                      aria-hidden="true"
+                    >
+                      <div
+                        className="modal-dialog modal-lg modal-dialog-centered"
+                        role="document"
+                      >
                         <div className="modal-content">
                           <div className="modal-body">
                             <button
-                              className='btn-floating btn-sm btn-filter ml-3 modal-close'
-                              type='button'
+                              className="btn-floating btn-sm btn-filter ml-3 modal-close"
+                              type="button"
                               data-dismiss="modal"
-                              aria-label='close'
+                              aria-label="close"
                             >
-                              <i class='fas fa-times'></i>
+                              <i class="fas fa-times"></i>
                             </button>
-                            <iframe className="ifmplayer" src={this.state.surprisemeVideo.video_url} frameborder="0" width="100%" height="400"></iframe>
-                            <h5 class="my-3" >{this.state.surprisemeVideo.title}</h5>
-                            <div className='surprise-indendation' dangerouslySetInnerHTML={{ __html: this.state.surprisemeVideo.description }} />
-                            <a className='btn btn-sm mt-2' href={'/user/video-details/' + this.state.surprisemeVideo.id}><span>Go to video page</span></a>
+                            <iframe
+                              className="ifmplayer"
+                              src={this.state.surprisemeVideo.video_url}
+                              frameborder="0"
+                              width="100%"
+                              height="400"
+                            ></iframe>
+                            <h5 class="my-3">
+                              {this.state.surprisemeVideo.title}
+                            </h5>
+                            <div
+                              className="surprise-indendation"
+                              dangerouslySetInnerHTML={{
+                                __html: this.state.surprisemeVideo.description,
+                              }}
+                            />
+                            <a
+                              className="btn btn-sm mt-2"
+                              href={
+                                "/user/video-details/" +
+                                this.state.surprisemeVideo.id
+                              }
+                            >
+                              <span>Go to video page</span>
+                            </a>
                           </div>
                         </div>
                       </div>
@@ -591,27 +730,23 @@ export default class SearchComponent extends Component {
                     {/* <button className="btn btn-sm explore_surprise ml-2" data-toggle="modal" data-target="#surprise">Surprise Me</button> */}
                   </div>
                 </div>
-                <div className='col-md-12 mt-5 pl-50'>
-                  <h4 className='revamp-subtitle'>Browse by filters</h4>
+                <div className="col-md-12 mt-5 pl-50">
+                  <h4 className="revamp-subtitle">Browse by filters</h4>
                 </div>
-                <div className='col-md-12 pl-50 d-flex f-dir align-items-center'>
-                  <div className='input-field revamp-filter-btn col-md-2 mr-4'>
+                <div className="col-md-12 pl-50 d-flex f-dir align-items-center">
+                  <div className="input-field revamp-filter-btn col-md-2 mr-4">
                     <select
-                      name='selectedStyleType'
+                      name="selectedStyleType"
                       onChange={this.onChange}
                       value={cFstyleId}
                     >
-                      <option value=''>Style</option>
+                      <option value="">Style</option>
                       {this.state.styleType.map((item, index) => {
                         return (
                           <option
                             itemName={item.type}
                             value={item.id}
-                            selected={
-                              cFstyleId == item.id
-                                ? 'selected'
-                                : ''
-                            }
+                            selected={cFstyleId == item.id ? "selected" : ""}
                           >
                             {item.type}
                           </option>
@@ -619,32 +754,35 @@ export default class SearchComponent extends Component {
                       })}
                     </select>
                   </div>
-                  {
-                    cShowStyle && (
-                      <div className='input-field revamp-filter-btn col-md-2 mr-4'>
-                        <select name='selectedStyle' onChange={this.onChange} value={cFstyleId2} >
-                          <option value=''>Select Class</option>
-                          {cStylesData.map((item, index) => {
-                            return (
-                              <option
-                                itemName={item.name}
-                                value={item.id}
-                                selected={
-                                  cFstyleId2 == item.id
-                                    ? 'selected'
-                                    : ''
-                                }
-                              >
-                                {item.name}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
-                    )}
-                  <div className='input-field revamp-filter-btn col-md-2 mr-4'>
-                    <select name='selectedTeacher' onChange={this.onChange} value={cFteacherId}>
-                      <option value='' selected>
+                  {cShowStyle && (
+                    <div className="input-field revamp-filter-btn col-md-2 mr-4">
+                      <select
+                        name="selectedStyle"
+                        onChange={this.onChange}
+                        value={cFstyleId2}
+                      >
+                        <option value="">Select Class</option>
+                        {cStylesData.map((item, index) => {
+                          return (
+                            <option
+                              itemName={item.name}
+                              value={item.id}
+                              selected={cFstyleId2 == item.id ? "selected" : ""}
+                            >
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  )}
+                  <div className="input-field revamp-filter-btn col-md-2 mr-4">
+                    <select
+                      name="selectedTeacher"
+                      onChange={this.onChange}
+                      value={cFteacherId}
+                    >
+                      <option value="" selected>
                         Select Teacher
                       </option>
                       {this.state.teachers.map((item, index) => {
@@ -652,11 +790,7 @@ export default class SearchComponent extends Component {
                           <option
                             itemName={item.name}
                             value={item.id}
-                            selected={
-                              cFteacherId == item.id
-                                ? 'selected'
-                                : ''
-                            }
+                            selected={cFteacherId == item.id ? "selected" : ""}
                           >
                             {item.name}
                           </option>
@@ -664,13 +798,13 @@ export default class SearchComponent extends Component {
                       })}
                     </select>
                   </div>
-                  <div className='input-field revamp-filter-btn col-md-2 mr-4'>
+                  <div className="input-field revamp-filter-btn col-md-2 mr-4">
                     <select
-                      name='duration'
+                      name="duration"
                       value={cFduration}
                       onChange={this.onDurationChange}
                     >
-                      <option value='' selected>
+                      <option value="" selected>
                         Duration
                       </option>
                       <option fromVal={0} value={300}>
@@ -705,45 +839,69 @@ export default class SearchComponent extends Component {
                       </option>
                     </select>
                   </div>
-                  {/* <div className='input-field revamp-filter-btn col-md-2  mr-4'>
+                  <div className="input-field revamp-filter-btn col-md-2  ">
+                    <button
+                      className="btn btn-sm btn-filter mb-4 ml-3"
+                      type="button"
+                      onClick={this.clearAllFilter}
+                      data-html={true}
+                      data-for="custom-color-no-arrow"
+                      data-tip="Clear all filters"
+                    >
+                      Clear Filter
+                    </button>
+                    <ReactTooltip
+                      id="custom-color-no-arrow"
+                      className="react-tooltip"
+                      delayHide={1000}
+                      textColor="#FFF"
+                      backgroundColor="#000"
+                      effect="solid"
+                    />
+                  </div>
+                </div>
+                <div className="col-md-12 mt-5 pl-50">
+                  <h4 className="revamp-subtitle">Browse by Intentions</h4>
+                </div>
+                <div className="col-md-12 pl-50 d-flex f-dir align-items-center">
+                  <div className="input-field revamp-filter-btn col-md-2  mr-4">
                     {this.state.intentions.length > 0 ? (
                       <Multiselect
                         options={this.state.intentions}
                         onSelect={this.onSelect}
                         onRemove={this.onRemove}
                         selectedValues={cFintentions}
-                        displayValue='name'
-                        placeholder='Select Intentions'
+                        displayValue="name"
+                        placeholder="Select Intentions"
                       />
                     ) : null}
-                  </div> */}
-                  <div className='input-field revamp-filter-btn col-md-2  '>
+                  </div>
+                  <div className="input-field revamp-filter-btn col-md-2  ">
                     <button
-                      className='btn btn-sm btn-filter mb-4 ml-3'
-                      type='button'
-                      onClick={this.clearAllFilter}
+                      className="btn btn-sm btn-filter mb-4 ml-3"
+                      type="button"
+                      onClick={this.clearAllIntentions}
                       data-html={true}
-                      data-for='custom-color-no-arrow'
-                      data-tip='Clear all filters'
+                      data-for="custom-color-no-arrow"
+                      data-tip="Clear all filters"
                     >
                       Clear Filter
                     </button>
                     <ReactTooltip
-                      id='custom-color-no-arrow'
-                      className='react-tooltip'
+                      id="custom-color-no-arrow"
+                      className="react-tooltip"
                       delayHide={1000}
-                      textColor='#FFF'
-                      backgroundColor='#000'
-                      effect='solid'
+                      textColor="#FFF"
+                      backgroundColor="#000"
+                      effect="solid"
                     />
                   </div>
-
                 </div>
-                <div className=' col-md-12 pl-50 class-block my-0 border-0 h-160'>
-                  <h4 className='revamp-subtitle mt-3 mb-0'>Search result</h4>
+                <div className=" col-md-12 pl-50 class-block my-0 border-0 h-160">
+                  <h4 className="revamp-subtitle mt-3 mb-0">Search result</h4>
                   <div className>
-                    <h4 className='vid_stat_cnt'>
-                      <span id='total_rec'>{this.state.totalCount}</span> Videos
+                    <h4 className="vid_stat_cnt">
+                      <span id="total_rec">{this.state.totalCount}</span> Videos
                     </h4>
                   </div>
 
@@ -754,23 +912,20 @@ export default class SearchComponent extends Component {
                     hasMore={this.state.hasMore}
                     onLoadMore={this.loadMore}
                   >
-                    <div className='row serchVideos'>
+                    <div className="row serchVideos">
                       {this.state.videos.map((item, index) => {
                         return <VideoDetails item={item} key={item.id} />;
                       })}
                     </div>
                   </InfiniteScroll>
                   {this.state.videos.length > 0 ? null : (
-                    <div className='card-panel text-center sattva-error'>
+                    <div className="card-panel text-center sattva-error">
                       <p>No videos found, please try again later, Thank you</p>
                     </div>
                   )}
                 </div>
               </div>
             </div>
-
-
-
           </section>
         </main>
       </Layout>
