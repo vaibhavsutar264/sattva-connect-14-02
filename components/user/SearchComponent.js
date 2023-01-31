@@ -406,7 +406,7 @@ export default class SearchComponent extends Component {
     changeFteacher("");
     changeFstyle2("");
     changeFstyle("");
-    // changeFintentions("");
+    changeFintentions("");
     changeFduration("");
     changeFstyleId("");
     changeFteacherId("");
@@ -420,9 +420,9 @@ export default class SearchComponent extends Component {
       selectedTeacherText: "",
       selectedStyleText: "",
       selectedStyleTypeText: "",
-      // selectedIntention: [],
+      selectedIntention: [],
       selectedStyle: "",
-      // selectedIntentionType: [],
+      selectedIntentionType: [],
     });
     // if (this.state.selectedIntention.length > 0) {
     //   this.multiselectRef.current.resetSelectedValues();
@@ -876,7 +876,7 @@ export default class SearchComponent extends Component {
                       />
                     ) : null}
                   </div>
-                  <div className="input-field revamp-filter-btn col-md-2  ">
+                  {/* <div className="input-field revamp-filter-btn col-md-2  ">
                     <button
                       className="btn btn-sm btn-filter mb-4 ml-3"
                       type="button"
@@ -895,7 +895,7 @@ export default class SearchComponent extends Component {
                       backgroundColor="#000"
                       effect="solid"
                     />
-                  </div>
+                  </div> */}
                 </div>
                 <div className=" col-md-12 pl-50 class-block my-0 border-0 h-160">
                   <h4 className="revamp-subtitle mt-3 mb-0">Search result</h4>
