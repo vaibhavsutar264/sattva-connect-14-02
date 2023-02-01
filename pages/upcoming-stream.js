@@ -64,6 +64,7 @@ const handleSelectSlot = (e) => {
     AllStream?.map((item, index) => {
         item.schedule.map((item2,index)=>{
           console.log(item?.event + item2);
+          console.log(moment(item2).toDate());
               const data = {
             title: `${moment(item2).format('h:mm a')} | ${item?.event}`,
             id: index,
