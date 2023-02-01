@@ -12,8 +12,6 @@ const Intentions = dynamic(() => import('../components/home/Intentions'), {
 });
 function AboutUs() {
   const [intentions, setIntentions] = useState([]);
-
-
   useEffect(() => {
     const requestOptions = {
       headers: getApiHeader(),

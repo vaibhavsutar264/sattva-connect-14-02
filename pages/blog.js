@@ -209,7 +209,7 @@ const blog = () => {
                                                             <Accordion
                                                                 allowZeroExpanded={true}
                                                             >
-                                                                {previousBlog.map((item, index) => {
+                                                                {Array.isArray(previousBlog) ? previousBlog.map((item, index) => {
 
                                                                     return (
                                                                         item[0] && item[0].created_at ?
@@ -267,7 +267,7 @@ const blog = () => {
                                                                                 : ''
                                                                             : <></>
                                                                     )
-                                                                })
+                                                                }): []
                                                                 }
                                                             </Accordion>
                                                         </AccordionItemPanel>
@@ -304,7 +304,7 @@ const blog = () => {
                                                             <Accordion
                                                                 allowZeroExpanded={true}
                                                             >
-                                                                {previousBlog.map((item, index) => {
+                                                                {Array.isArray(previousBlog) ? previousBlog.map((item, index) => {
 
                                                                     return (
                                                                         item[0] && item[0].created_at ?
@@ -362,7 +362,7 @@ const blog = () => {
                                                                                 : ''
                                                                             : <></>
                                                                     )
-                                                                })
+                                                                }): []
                                                                 }
                                                             </Accordion>
                                                         </AccordionItemPanel>

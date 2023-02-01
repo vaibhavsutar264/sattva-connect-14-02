@@ -2,8 +2,10 @@ import React from 'react';
 import Head from 'next/head';
 import { apiRoute } from '../utils/helpers';
 import Layout from '../components/Layout';
+import DOMPurify from 'isomorphic-dompurify';
 
 const TermsOfServices = ({ pageData }) => {
+  const terms = pageData['0'].description;
   return (
     <Layout>
       <Head>
@@ -19,7 +21,7 @@ const TermsOfServices = ({ pageData }) => {
               </p>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: pageData['0'].description,
+                  __html: DOMPurify.sanitize(terms),
                 }}
               ></div>
             </div>

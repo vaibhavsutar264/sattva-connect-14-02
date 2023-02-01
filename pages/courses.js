@@ -7,7 +7,10 @@ import Constants from '../constants';
 import CoursesList from '../components/course/CoursesList';
 
 class Courses extends Component {
+  
   render() {
+    console.log(this.props.banner);
+    console.log(this.props.courses);
     return (
       <Layout isHome={true}>
         <Head>
@@ -81,6 +84,7 @@ class Courses extends Component {
 export async function getStaticProps() {
   const getBanner = await fetch(apiRoute('cms-page-banner/Mw=='));
   const banner = await getBanner.json();
+  
   const res = await fetch(apiRoute('get-courses-data/0'));
   const allData = await res.json();
   const courses = allData.courses;

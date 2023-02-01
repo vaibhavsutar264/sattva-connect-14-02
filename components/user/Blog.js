@@ -47,7 +47,6 @@ const Blog = ({ posts }) => {
                 quote={posts.title}
                 hashtag="#sattvayogiclifestyle"
                 >
-
                  <i class="fa fa-facebook" aria-hidden="true"></i>
               </FacebookShareButton>
 

@@ -100,7 +100,6 @@ export default class Me extends Component {
       .then((response) => {
         // handle success
         this.setState({ seriesdata: response.data.reverse() });
-
       })
       .catch((error) => {
         // handle error

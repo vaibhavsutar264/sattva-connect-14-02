@@ -1081,7 +1081,6 @@ class RegistrationForm extends Component {
                       environment: 'PRODUCTION',
                       googlePayVersion: 2,
                       merchantId: this.state.gpayMerchantId,
-
                       transactionInfo: {
                         totalPriceStatus: 'FINAL',
                         totalPrice: '21',

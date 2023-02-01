@@ -38,6 +38,7 @@ export default class Explore extends Component {
 
   componentDidMount() {
     const userId = getUserId(this.props.history);
+    
     const auth = getLocalStorageAuth();
     if (auth) {
       var hasSubscription = auth.userDetails.has_subscription;
@@ -54,6 +55,8 @@ export default class Explore extends Component {
     .then((res) => {
       this.setState({ accessDetails: res.data });
     });
+
+    console.log(btoa(userId));
 
     axios
       .get(
@@ -126,9 +129,11 @@ export default class Explore extends Component {
       .then((res) => {
         if (hasSubscription == '1') {
           let allCourses = [...res.data.courses, ...res.data.freeCourses];
+          console.log(allCourses);
           var myAllCourses = allCourses.filter(
             (v, i, a) => a.findIndex((t) => t.id === v.id) === i
           );
+          console.log(myAllCourses);
         } else {
           let allCourses = res.data.courses;
           var myAllCourses = allCourses.filter(
