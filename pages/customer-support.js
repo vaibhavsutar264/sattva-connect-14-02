@@ -119,7 +119,7 @@ class CustomerSupport extends Component {
                               Feature request
                             </option>
                             <option value='My account'>My account</option>
-                            <option value='Payment'>Payment</option>
+                            <option value='Payment'>Payment</option>  
                             <option value='Video playback and streaming'>
                               Video playback and streaming
                             </option>

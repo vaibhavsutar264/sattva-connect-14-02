@@ -23,6 +23,7 @@ class teachers extends Component{
 		};
 		axios.get(apiRoute('cms-page-banner/'+btoa(6)),requestOptions)
 		.then(res =>{
+			console.log(btoa(6));
 			this.setState({ banner : res.data });
 	    })
 	}	

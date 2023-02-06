@@ -81,6 +81,13 @@ class CourseServices {
 
     return axios.get(apiRoute('get-client-id'), requestOptions);
   }
+  static getApiKeyData = async() => {
+    const requestOptions = {
+      headers: getApiHeader(),
+    };
+    const {data} = await axios.get("http://localhost:4000/api/v1/stripeapikey");
+    return data.stripeApiKey
+  }
 
   static checkUsernameAvailability(username) {
     const requestOptions = {
@@ -189,6 +196,19 @@ class CourseServices {
   }
 
   static userRegistration(data) {
+    let paramsData = JSON.stringify(data);
+    const requestOptions = {
+      headers: getApiHeader(),
+    };
+
+    return axios.post(
+      apiRoute('user-registration-subscription'),
+      paramsData,
+      requestOptions
+    );
+  }
+
+  static stripeSubmit(data) {
     let paramsData = JSON.stringify(data);
     const requestOptions = {
       headers: getApiHeader(),

@@ -14,6 +14,20 @@ import SimpleReactValidator from 'simple-react-validator';
 import CountryOptions from '../CountryOptions';
 import CourseServices from '../../services/courseServices';
 import PhoneCodeOptions from '../PhoneCodeOptions';
+import {
+  
+  CardNumberElement,
+  CardNumberElementComponent,
+  CardCvcElementComponent,
+  CardCvcElement,
+  CardElement,
+  CardExpiryElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+import {Elements} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 // import FacebookLogin from 'react-facebook-login';
 
 const max = 9;
@@ -23,16 +37,16 @@ const initialState = {
   username: '',
   password: '',
   confirmPassword: '',
-  firstName: '',
+  firstName: 'ddd',
   lastName: '',
-  address1: '',
-  address2: '',
-  city: '',
+  address1: 'kuch bhi',
+  address2: 'kuch bhi',
+  city: 'Mumbai',
   zip: '',
-  country: '',
-  countryCode: '',
+  country: 'india',
+  countryCode: '912',
   phone: '',
-  email: '',
+  email: 'abc@gmail.com',
   confirmEmail: '',
   planId: '',
   planName: '',
@@ -67,11 +81,21 @@ const initialState = {
   fb: true,
   fb_id: '',
   fbIdAvailability: true,
+  stripeApiKeyValue:'',
 };
+
+const stripePromise = loadStripe('pk_test_51LVH7aSHR0RldS5SDccrBCGYL079sIp4imWCPouD9KTRFyVWbRh6vpxLSWMT71YSnYNmMOWu3JlKnw8F0yF9hOop002MmGivtw');
+
 
 class RegistrationForm extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
+    this.paymentData = {
+      amount: 21000, 
+    };
+    this.stripe = this.props.stripe;
+    this.elements2 = this.props.elements;
     this.validator = new SimpleReactValidator();
     this.recaptchaRef = React.createRef();
     this.onChange = this.onChange.bind(this);
@@ -89,6 +113,9 @@ class RegistrationForm extends Component {
 
   componentDidMount() {
 
+    // this.fetchUserS.bind(this);
+  console.log(this.props.elements && this.props.elements.getElement(CardNumberElement))
+    
     const script = document.createElement("script");
 
     script.src = "https://connect.facebook.net/en_US/sdk.js";
@@ -98,11 +125,18 @@ class RegistrationForm extends Component {
 
 
     console.log(this.props.affiliateId);
+    console.log(this.props);
     CourseServices.getClintId().then((res) => {
       this.setState({
         clientId: res.data,
       });
     });
+    CourseServices.getApiKeyData().then((res) => {
+      this.setState({
+        stripeApiKeyValue: res,
+      });
+    });
+    console.log(CourseServices.getApiKeyData());
     const requestOptions = {
       headers: getApiHeader(),
     };
@@ -132,8 +166,36 @@ class RegistrationForm extends Component {
     };
 
 
+  //  const datafunction = async()=>{
+  //     const data =  await axios.get("http://localhost:4000/api/v1/stripeapikey");
+  //     console.log(data);
+  //     // this.setState({
+  //     //   stripeApiKeyValue: data.stripeApiKey,
+  //     // });
+  //   }
+  //   this.datafunction.bind(this)
+  //   this.datafunction()
+
+  //   console.log(this.datafunction());
 
   }
+
+//   fetchUserS = () => {
+//     let url = 'http://localhost:4000/api/v1/stripeapikey';
+//     this.fetchApi(url);
+//  };
+
+//   fetchApi = (url) => {
+//   axios.get(url)
+//   .then((res) => res.json())
+//   .then((res) => this.setState({
+//     stripeApiKeyValue: res.stripeApiKey,
+//      }))
+
+//      console.log(this.state.stripeApiKeyValue);
+//   };
+
+
 
   fbLogindata = () => {
     window.FB.login(() => {
@@ -296,130 +358,192 @@ class RegistrationForm extends Component {
       });
   }
 
+  async getStripeApiKey(){
+    const data = await axios.get("http://localhost:4000/api/v1/stripeapikey");
+    console.log(data);
+    // this.setState({
+    //   stripeApiKeyValue: data.stripeApiKey,
+    // });
+  }
+
   async onSubmit(e) {
     e.preventDefault();
+    console.log(this.props.stripe)
+    console.log(this.props.elements)
+    // if (!this.validator.allValid()) {
+    //   this.validator.showMessages();
+    //   this.forceUpdate();
+    //   window.scrollTo(0, 0);
+    //   return false;
+    // }
+    // if (this.state.password !== this.state.confirmPassword) {
+    //   window.scrollTo(0, 0);
+    //   this.setState({ confirmPasswordError: true });
+    //   return false;
+    // } else {
+    //   this.setState({ confirmPasswordError: false });
+    // }
+    // if (this.state.email !== this.state.confirmEmail) {
+    //   window.scrollTo(0, 0);
+    //   this.setState({ confirmEmailError: true });
+    //   return false;
+    // } else {
+    //   this.setState({ confirmEmailError: false });
+    // }
 
-    if (!this.validator.allValid()) {
-      this.validator.showMessages();
-      this.forceUpdate();
-      window.scrollTo(0, 0);
-      return false;
-    }
-    if (this.state.password !== this.state.confirmPassword) {
-      window.scrollTo(0, 0);
-      this.setState({ confirmPasswordError: true });
-      return false;
-    } else {
-      this.setState({ confirmPasswordError: false });
-    }
-    if (this.state.email !== this.state.confirmEmail) {
-      window.scrollTo(0, 0);
-      this.setState({ confirmEmailError: true });
-      return false;
-    } else {
-      this.setState({ confirmEmailError: false });
-    }
+    // if (!this.state.emailAvailability) {
+    //   window.scrollTo(0, 0);
+    //   return false;
+    // }
+    // if (!this.state.usenameAvailability) {
+    //   window.scrollTo(0, 0);
+    //   return false;
+    // }
+    // if (this.state.couponCode !== '' && this.state.couponApplied == false) {
+    //   this.setState({ couponApplyError: true });
+    //   window.scrollTo(0, 0);
+    //   return false;
+    // }
+    // const recaptcha = await this.recaptchaRef.current.getValue();
+    // if (!recaptcha) {
+    //   window.scrollTo(0, 0);
+    //   const widId = this.recaptchaRef.current.getWidgetId();
+    //   this.recaptchaRef.current.reset(widId);
+    //   this.setState({ security: false });
+    //   return false;
+    // } else {
+    //   this.setState({ security: true });
+    // }
 
-    if (!this.state.emailAvailability) {
-      window.scrollTo(0, 0);
-      return false;
-    }
-    if (!this.state.usenameAvailability) {
-      window.scrollTo(0, 0);
-      return false;
-    }
-    if (this.state.couponCode !== '' && this.state.couponApplied == false) {
-      this.setState({ couponApplyError: true });
-      window.scrollTo(0, 0);
-      return false;
-    }
-    const recaptcha = await this.recaptchaRef.current.getValue();
-    if (!recaptcha) {
-      window.scrollTo(0, 0);
-      const widId = this.recaptchaRef.current.getWidgetId();
-      this.recaptchaRef.current.reset(widId);
-      this.setState({ security: false });
-      return false;
-    } else {
-      this.setState({ security: true });
-    }
+    // if (!this.instance) {
+    //   return false;
+    // }
+    // this.setState({ loading: true });
+    // const { nonce, type, details } = await this.instance.requestPaymentMethod();
+    // const userDetail = {
+    //   username: this.state.username,
+    //   password: this.state.password,
+    //   firstName: this.state.firstName,
+    //   lastName: this.state.lastName,
+    //   address1: this.state.address1,
+    //   address2: this.state.address2,
+    //   city: this.state.city,
+    //   zip: this.state.zip,
+    //   country: this.state.country,
+    //   countryCode: this.state.countryCode,
+    //   phone: this.state.phone,
+    //   email: this.state.email,
+    //   planId: this.props.planId,
+    //   affiliateId: this.props.affiliateId,
+    //   plan: this.state.planId,
+    //   planName: this.state.planName,
+    //   planPrice: this.state.planPrice,
+    //   couponCode: this.state.appiedCouponCode,
+    //   newslatter: this.state.newslatter,
+    //   recaptcha: recaptcha,
+    //   paymentType: type,
+    //   paymentNonce: nonce,
+    //   paymentDetails: details,
+    //   event: '1',
+    //   affiliate_id: this.state.affiliate_id,
+    //   fb_id: this.state.fb_id,
+    // };
 
-    if (!this.instance) {
-      return false;
-    }
-    this.setState({ loading: true });
-    const { nonce, type, details } = await this.instance.requestPaymentMethod();
-    const userDetail = {
-      username: this.state.username,
-      password: this.state.password,
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      address1: this.state.address1,
-      address2: this.state.address2,
-      city: this.state.city,
-      zip: this.state.zip,
-      country: this.state.country,
-      countryCode: this.state.countryCode,
-      phone: this.state.phone,
-      email: this.state.email,
-      planId: this.props.planId,
-      affiliateId: this.props.affiliateId,
-      plan: this.state.planId,
-      planName: this.state.planName,
-      planPrice: this.state.planPrice,
-      couponCode: this.state.appiedCouponCode,
-      newslatter: this.state.newslatter,
-      recaptcha: recaptcha,
-      paymentType: type,
-      paymentNonce: nonce,
-      paymentDetails: details,
-      event: '1',
-      affiliate_id: this.state.affiliate_id,
-      fb_id: this.state.fb_id,
-    };
+    // CourseServices.userRegistration(userDetail)
+    //   .then((res) => {
+    //     window.scrollTo(0, 0);
+    //     const userEmailDetails = {
+    //       firstName: this.state.firstName,
+    //       lastName: this.state.lastName,
+    //       email: this.state.email,
+    //     };
+    //     const requestOptions = {
+    //       headers: getApiHeader(),
+    //     };
+    //     if (this.state.newslatter == '1') {
+    //       axios.post(
+    //         apiRoute('add-user-to-mailchimp'),
+    //         userEmailDetails,
+    //         requestOptions
+    //       );
+    //     }
+    //     this.setState({ loading: false });
+    //     Router.push(
+    //       Constants.SITE_URL +
+    //       '/user-registration-success/' +
+    //       this.state.planPrice
+    //     );
+    //   })
+    //   .catch((error) => {
+    //     window.scrollTo(0, 0);
+    //     this.setState({ loading: false });
+    //     const widId = this.recaptchaRef.current.getWidgetId();
+    //     this.recaptchaRef.current.reset(widId);
+    //     var errorsArray = [];
+    //     if (error.response.status === 422) {
+    //       var errors = error.response.data.errors;
+    //       Object.keys(errors).forEach(function (key) {
+    //         errorsArray.push({ message: errors[key][0] });
+    //       });
+    //       this.setState({ error: true, errors: errorsArray });
+    //     } else {
+    //       errorsArray.push({ message: error.response.data.message });
+    //       this.setState({ error: true, errors: errorsArray });
+    //     }
+    //   });
 
-    CourseServices.userRegistration(userDetail)
-      .then((res) => {
-        window.scrollTo(0, 0);
-        const userEmailDetails = {
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          email: this.state.email,
+
+      try {
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+          },
         };
-        const requestOptions = {
-          headers: getApiHeader(),
+
+        const paymentDataValue = {
+          amount: 111111, 
+          //round is used to roundoff value with greater amount and 100 is multiplied to get the value in paise because strip save amount in paise
         };
-        if (this.state.newslatter == '1') {
-          axios.post(
-            apiRoute('add-user-to-mailchimp'),
-            userEmailDetails,
-            requestOptions
-          );
-        }
-        this.setState({ loading: false });
-        Router.push(
-          Constants.SITE_URL +
-          '/user-registration-success/' +
-          this.state.planPrice
+        const { data } = await axios.post(
+          "http://localhost:4000/api/v1/payment/process",
+          paymentDataValue,
+          config
         );
-      })
-      .catch((error) => {
-        window.scrollTo(0, 0);
-        this.setState({ loading: false });
-        const widId = this.recaptchaRef.current.getWidgetId();
-        this.recaptchaRef.current.reset(widId);
-        var errorsArray = [];
-        if (error.response.status === 422) {
-          var errors = error.response.data.errors;
-          Object.keys(errors).forEach(function (key) {
-            errorsArray.push({ message: errors[key][0] });
-          });
-          this.setState({ error: true, errors: errorsArray });
+  
+        let client_secret = data.client_secret; 
+        //this is the strip client key which we get from above data
+  
+        if (!this.props.stripe || !this.props.elements) return;
+        // it means that it this strip and elements are not there then dont go further just do nothing
+        
+        // and if it is there then below process
+        const result = this.props.stripe && await this.props.stripe.confirmCardPayment(client_secret, {
+          payment_method: {
+            card: this.props.elements && this.props.elements.getElement(CardNumberElement),
+            billing_details: {
+              name: this.state.firstName,
+              email: this.state.email,
+              address: {
+                line1: this.state.address1,
+                city: this.state.address2,
+                state: this.state.city,
+              },
+            },
+          },
+        });
+  
+        if (result.error) {
+            console.log(result.error);
         } else {
-          errorsArray.push({ message: error.response.data.message });
-          this.setState({ error: true, errors: errorsArray });
+          if (result.paymentIntent.status === "succeeded") {
+            console.log('successful payments');
+          } else {
+            console.log("There's some issue while processing payment ");
+          }
         }
-      });
+      } catch (error) {
+        console.log(error);
+      }
   }
   howYouKnowChange = (e) => {
     const text = e.target.value;
@@ -526,6 +650,192 @@ class RegistrationForm extends Component {
   // };
   render() {
     const { clientId } = this.state;
+    console.log(this.stripe);
+    console.log(this.props.elements);
+    console.log(CardNumberElement)
+    console.log(this.props.elements && this.props.elements.getElement(CardNumberElement));
+    // async function onSubmit(e) {
+    //   e.preventDefault();
+    //   console.log(this.props.stripe)
+    //   console.log(this.props.elements)
+    //   // if (!this.validator.allValid()) {
+    //   //   this.validator.showMessages();
+    //   //   this.forceUpdate();
+    //   //   window.scrollTo(0, 0);
+    //   //   return false;
+    //   // }
+    //   // if (this.state.password !== this.state.confirmPassword) {
+    //   //   window.scrollTo(0, 0);
+    //   //   this.setState({ confirmPasswordError: true });
+    //   //   return false;
+    //   // } else {
+    //   //   this.setState({ confirmPasswordError: false });
+    //   // }
+    //   // if (this.state.email !== this.state.confirmEmail) {
+    //   //   window.scrollTo(0, 0);
+    //   //   this.setState({ confirmEmailError: true });
+    //   //   return false;
+    //   // } else {
+    //   //   this.setState({ confirmEmailError: false });
+    //   // }
+  
+    //   // if (!this.state.emailAvailability) {
+    //   //   window.scrollTo(0, 0);
+    //   //   return false;
+    //   // }
+    //   // if (!this.state.usenameAvailability) {
+    //   //   window.scrollTo(0, 0);
+    //   //   return false;
+    //   // }
+    //   // if (this.state.couponCode !== '' && this.state.couponApplied == false) {
+    //   //   this.setState({ couponApplyError: true });
+    //   //   window.scrollTo(0, 0);
+    //   //   return false;
+    //   // }
+    //   // const recaptcha = await this.recaptchaRef.current.getValue();
+    //   // if (!recaptcha) {
+    //   //   window.scrollTo(0, 0);
+    //   //   const widId = this.recaptchaRef.current.getWidgetId();
+    //   //   this.recaptchaRef.current.reset(widId);
+    //   //   this.setState({ security: false });
+    //   //   return false;
+    //   // } else {
+    //   //   this.setState({ security: true });
+    //   // }
+  
+    //   // if (!this.instance) {
+    //   //   return false;
+    //   // }
+    //   // this.setState({ loading: true });
+    //   // const { nonce, type, details } = await this.instance.requestPaymentMethod();
+    //   // const userDetail = {
+    //   //   username: this.state.username,
+    //   //   password: this.state.password,
+    //   //   firstName: this.state.firstName,
+    //   //   lastName: this.state.lastName,
+    //   //   address1: this.state.address1,
+    //   //   address2: this.state.address2,
+    //   //   city: this.state.city,
+    //   //   zip: this.state.zip,
+    //   //   country: this.state.country,
+    //   //   countryCode: this.state.countryCode,
+    //   //   phone: this.state.phone,
+    //   //   email: this.state.email,
+    //   //   planId: this.props.planId,
+    //   //   affiliateId: this.props.affiliateId,
+    //   //   plan: this.state.planId,
+    //   //   planName: this.state.planName,
+    //   //   planPrice: this.state.planPrice,
+    //   //   couponCode: this.state.appiedCouponCode,
+    //   //   newslatter: this.state.newslatter,
+    //   //   recaptcha: recaptcha,
+    //   //   paymentType: type,
+    //   //   paymentNonce: nonce,
+    //   //   paymentDetails: details,
+    //   //   event: '1',
+    //   //   affiliate_id: this.state.affiliate_id,
+    //   //   fb_id: this.state.fb_id,
+    //   // };
+  
+    //   // CourseServices.userRegistration(userDetail)
+    //   //   .then((res) => {
+    //   //     window.scrollTo(0, 0);
+    //   //     const userEmailDetails = {
+    //   //       firstName: this.state.firstName,
+    //   //       lastName: this.state.lastName,
+    //   //       email: this.state.email,
+    //   //     };
+    //   //     const requestOptions = {
+    //   //       headers: getApiHeader(),
+    //   //     };
+    //   //     if (this.state.newslatter == '1') {
+    //   //       axios.post(
+    //   //         apiRoute('add-user-to-mailchimp'),
+    //   //         userEmailDetails,
+    //   //         requestOptions
+    //   //       );
+    //   //     }
+    //   //     this.setState({ loading: false });
+    //   //     Router.push(
+    //   //       Constants.SITE_URL +
+    //   //       '/user-registration-success/' +
+    //   //       this.state.planPrice
+    //   //     );
+    //   //   })
+    //   //   .catch((error) => {
+    //   //     window.scrollTo(0, 0);
+    //   //     this.setState({ loading: false });
+    //   //     const widId = this.recaptchaRef.current.getWidgetId();
+    //   //     this.recaptchaRef.current.reset(widId);
+    //   //     var errorsArray = [];
+    //   //     if (error.response.status === 422) {
+    //   //       var errors = error.response.data.errors;
+    //   //       Object.keys(errors).forEach(function (key) {
+    //   //         errorsArray.push({ message: errors[key][0] });
+    //   //       });
+    //   //       this.setState({ error: true, errors: errorsArray });
+    //   //     } else {
+    //   //       errorsArray.push({ message: error.response.data.message });
+    //   //       this.setState({ error: true, errors: errorsArray });
+    //   //     }
+    //   //   });
+  
+  
+    //     try {
+    //       const config = {
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //         },
+    //       };
+  
+    //       const paymentDataValue = {
+    //         amount: 111111, 
+    //         //round is used to roundoff value with greater amount and 100 is multiplied to get the value in paise because strip save amount in paise
+    //       };
+    //       const { data } = await axios.post(
+    //         "http://localhost:4000/api/v1/payment/process",
+    //         paymentDataValue,
+    //         config
+    //       );
+    
+    //       let client_secret = data.client_secret; 
+    //       //this is the strip client key which we get from above data
+    
+    //       if (!this.props.stripe || !this.props.elements) return;
+    //       // it means that it this strip and elements are not there then dont go further just do nothing
+          
+    //       // and if it is there then below process
+    //       const cardElement = document.getElementsByClassName('paymentInput-card')
+    //       const result = this.props.stripe && await this.props.stripe.confirmCardPayment(client_secret, {
+    //         payment_method: {
+    //           card: this.props.elements && this.props.elements.getElement(CardNumberElement),
+    //           billing_details: {
+    //             name: this.state.firstName,
+    //             email: this.state.email,
+    //             address: {
+    //               line1: this.state.address1,
+    //               city: this.state.address2,
+    //               state: this.state.city,
+    //               postal_code: this.state.countryCode,
+    //               country: this.state.country,
+    //             },
+    //           },
+    //         },
+    //       });
+    
+    //       if (result.error) {
+    //           console.log(result.error);
+    //       } else {
+    //         if (result.paymentIntent.status === "succeeded") {
+    //           console.log('successful payments');
+    //         } else {
+    //           console.log("There's some issue while processing payment ");
+    //         }
+    //       }
+    //     } catch (error) {
+    //       console.log(error);
+    //     }
+    // }
     return (
       <>
         {this.state.loading && (
@@ -535,6 +845,7 @@ class RegistrationForm extends Component {
             </div>
           </div>
         )}
+          
         <div className='card subscription-card'>
           <form
             onSubmit={this.onSubmit}
@@ -542,6 +853,9 @@ class RegistrationForm extends Component {
             autocomplete='off'
             className='form form-horizontal'
           >
+            <div>
+            <CardNumberElement id='card-number-element' className="paymentInput-card" />
+        </div>
             <div className='reg-head-div'>
               <div className='signUp-title-div'>
                 <h4 className='revamp-subtitle mb-3'>Account Information</h4>
@@ -816,23 +1130,6 @@ class RegistrationForm extends Component {
                   'required'
                 )} */}
               </div>
-              {/* <div className='control-group'>
-                <label
-                  id='address2-lbl'
-                  for='address2'
-                  className='control-label'
-                >
-                  Address2
-                </label>
-                <input
-                  type='text'
-                  name='address2'
-                  id='address2'
-                  value={this.state.address2}
-                  onChange={this.onChange}
-                />
-              </div> */}
-
               <div className='control-group revamp-form-field'>
                 <label id='city-lbl' for='city' className='control-label'>
                   City
@@ -1070,29 +1367,15 @@ class RegistrationForm extends Component {
               <p className='mb-3 freeTrailMsg revamp-para-small black-text'>
                 Your credit card will not be charged after your 14-days free trial, unless you cancel before the trial period ends. This can be done from your account settings. Please note that your membership is automatically renewed after every billing cycle.
               </p>
-              {clientId ? (
-                <DropIn
-                  options={{
-                    authorization: clientId,
-                    paymentOptionPriority: ['card', 'paypal', 'googlePay'],
-                    paypal: { flow: 'vault' },
-                    googlePay: { flow: 'vault' },
-                    googlePay: {
-                      environment: 'PRODUCTION',
-                      googlePayVersion: 2,
-                      merchantId: this.state.gpayMerchantId,
-                      transactionInfo: {
-                        totalPriceStatus: 'FINAL',
-                        totalPrice: '21',
-                        currencyCode: 'USD',
-                      },
-                    },
-                  }}
-                  onInstance={(instance) => (this.instance = instance)}
-                />
-              ) : (
-                ''
-              )}
+                
+                  <div>
+                </div>
+                <div>
+                <CardExpiryElement className="paymentInput" />
+                </div>
+                <div>
+                <CardCvcElement className="paymentInput" />
+                </div>
               <div className='checkbox'>
                 <input
                   id='terms'
@@ -1151,5 +1434,28 @@ class RegistrationForm extends Component {
     );
   }
 }
+
+export async function getStaticProps() {
+  const {data} =  await axios.get("http://localhost:4000/api/v1/stripeapikey");
+  const pageData = data
+  return {
+    props: {
+      pageData,
+    },
+    revalidate: 1,
+  };
+}
+
+// const datafunction = async()=>{
+//   const data =  await axios.get("http://localhost:4000/api/v1/stripeapikey");
+//   console.log(data);
+//   // this.setState({
+//   //   stripeApiKeyValue: data.stripeApiKey,
+//   // });
+// }
+// this.datafunction.bind(this)
+// this.datafunction()
+
+// console.log(this.datafunction());
 
 export default RegistrationForm;
