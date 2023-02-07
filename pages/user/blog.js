@@ -49,8 +49,12 @@ const blog = () => {
         const requestOptions = {
             headers: getApiHeader(),
         };
-
+        console.log(posts.filter((v,i,a)=>{
+            return a
+        }));
+        
         getPostdata();
+
 
         axios.get(apiRoute('get-courses-data/0'), requestOptions).then((res) => {
             setCourses(res.data);
@@ -79,6 +83,10 @@ const blog = () => {
             });
 
     }
+    console.log(posts)
+    console.log(posts && posts.filter((v,i,a)=>{
+        return v.id == 243
+    }));
 
     const searchBlogButton = () => {
         const requestOptions = {

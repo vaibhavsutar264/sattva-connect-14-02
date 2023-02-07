@@ -12,7 +12,25 @@ import {Elements} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from 'axios';
 
-const stripePromise = loadStripe('pk_test_51LVH7aSHR0RldS5SDccrBCGYL079sIp4imWCPouD9KTRFyVWbRh6vpxLSWMT71YSnYNmMOWu3JlKnw8F0yF9hOop002MmGivtw');
+async function getStripeApiKeyOuter(){
+  const Apikey = await axios.get("http://localhost:4000/api/v1/stripeapikey");
+  return Apikey.data.stripeApiKey;
+}
+async function jsonplace(){
+  const Apikey = await axios.get("https://jsonplaceholder.typicode.com/posts");
+  return Apikey.data;
+}
+function getStripeApiKeyOuter2(data){
+  // const Apikey = await axios.get("http://localhost:4000/api/v1/stripeapikey");
+   return data
+}
+
+const datastripe = getStripeApiKeyOuter2()
+
+let dataApi = ''
+
+
+const stripePromise = loadStripe('putyourstripeid');
 
 const UserRegistration = (props) => (
   <Elements stripe={stripePromise}>
@@ -22,19 +40,22 @@ const UserRegistration = (props) => (
 
 
 const MyComponent = ({ planId }) => {
+  console.log(jsonplace());
   const stripe = useStripe();
   const elements = useElements()
-  console.log(CardNumberElement.prototype);
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey(){
     const { data } = await axios.get("http://localhost:4000/api/v1/stripeapikey");
-
+    dataApi = data.stripeApiKey
     setStripeApiKey(data.stripeApiKey);
+    getStripeApiKeyOuter2(stripeApiKey)
   }
   useEffect(()=>{
     getStripeApiKey();
   },[]);
+
+  
 
   return (
     <Layout>
