@@ -96,6 +96,7 @@ class RegistrationForm extends Component {
     this.validator = new SimpleReactValidator();
     this.recaptchaRef = React.createRef();
     this.onChange = this.onChange.bind(this);
+    this.createSession = this.createSession.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.onCountryChange = this.onCountryChange.bind(this);
     this.onEmailChange = this.onEmailChange.bind(this);
@@ -243,6 +244,19 @@ class RegistrationForm extends Component {
     this.setState({ countryCode: phoneCode });
   }
 
+  createSession = async (price) => {
+    const { data: response } = await axios.post(
+      "http://localhost:8080/subs/session",
+      {
+        price,
+      }
+    );
+    if (typeof window !== 'undefined') {
+      window.location.href = response.url;
+ }
+    // window.location.href = response.url;
+  }
+
   onCheckboxChange = (e) => {
     if (e.target.checked) {
       this.setState({ [e.target.name]: 1 });
@@ -366,50 +380,50 @@ class RegistrationForm extends Component {
   async onSubmit(e) {
     e.preventDefault();
 
-    // if (!this.validator.allValid()) {
-    //   this.validator.showMessages();
-    //   this.forceUpdate();
-    //   window.scrollTo(0, 0);
-    //   return false;
-    // }
-    // if (this.state.password !== this.state.confirmPassword) {
-    //   window.scrollTo(0, 0);
-    //   this.setState({ confirmPasswordError: true });
-    //   return false;
-    // } else {
-    //   this.setState({ confirmPasswordError: false });
-    // }
-    // if (this.state.email !== this.state.confirmEmail) {
-    //   window.scrollTo(0, 0);
-    //   this.setState({ confirmEmailError: true });
-    //   return false;
-    // } else {
-    //   this.setState({ confirmEmailError: false });
-    // }
+    if (!this.validator.allValid()) {
+      this.validator.showMessages();
+      this.forceUpdate();
+      window.scrollTo(0, 0);
+      return false;
+    }
+    if (this.state.password !== this.state.confirmPassword) {
+      window.scrollTo(0, 0);
+      this.setState({ confirmPasswordError: true });
+      return false;
+    } else {
+      this.setState({ confirmPasswordError: false });
+    }
+    if (this.state.email !== this.state.confirmEmail) {
+      window.scrollTo(0, 0);
+      this.setState({ confirmEmailError: true });
+      return false;
+    } else {
+      this.setState({ confirmEmailError: false });
+    }
 
-    // if (!this.state.emailAvailability) {
-    //   window.scrollTo(0, 0);
-    //   return false;
-    // }
-    // if (!this.state.usenameAvailability) {
-    //   window.scrollTo(0, 0);
-    //   return false;
-    // }
-    // if (this.state.couponCode !== '' && this.state.couponApplied == false) {
-    //   this.setState({ couponApplyError: true });
-    //   window.scrollTo(0, 0);
-    //   return false;
-    // }
-    // const recaptcha = await this.recaptchaRef.current.getValue();
-    // if (!recaptcha) {
-    //   window.scrollTo(0, 0);
-    //   const widId = this.recaptchaRef.current.getWidgetId();
-    //   this.recaptchaRef.current.reset(widId);
-    //   this.setState({ security: false });
-    //   return false;
-    // } else {
-    //   this.setState({ security: true });
-    // }
+    if (!this.state.emailAvailability) {
+      window.scrollTo(0, 0);
+      return false;
+    }
+    if (!this.state.usenameAvailability) {
+      window.scrollTo(0, 0);
+      return false;
+    }
+    if (this.state.couponCode !== '' && this.state.couponApplied == false) {
+      this.setState({ couponApplyError: true });
+      window.scrollTo(0, 0);
+      return false;
+    }
+    const recaptcha = await this.recaptchaRef.current.getValue();
+    if (!recaptcha) {
+      window.scrollTo(0, 0);
+      const widId = this.recaptchaRef.current.getWidgetId();
+      this.recaptchaRef.current.reset(widId);
+      this.setState({ security: false });
+      return false;
+    } else {
+      this.setState({ security: true });
+    }
 
     // if (!this.instance) {
     //   return false;
@@ -437,9 +451,16 @@ class RegistrationForm extends Component {
     //   couponCode: this.state.appiedCouponCode,
     //   newslatter: this.state.newslatter,
     //   recaptcha: recaptcha,
-    //   paymentType: type,
-    //   paymentNonce: nonce,
-    //   paymentDetails: details,
+    //   paymentType: 'card',
+    //   paymentNonce: 1212,
+    //   paymentDetails: {
+    //     name: 'fff',
+    //     email: 'vaibhav@gmail.com',
+    //     address: {
+    //       line1: 'addereded',
+    //       city: 'fffvcff',
+    //       state: 'ddddd',
+    //     },},
     //   event: '1',
     //   affiliate_id: this.state.affiliate_id,
     //   fb_id: this.state.fb_id,
@@ -455,7 +476,7 @@ class RegistrationForm extends Component {
     //     };
     //     const requestOptions = {
     //       headers: getApiHeader(),
-    //     };
+    //     }; 
     //     if (this.state.newslatter == '1') {
     //       axios.post(
     //         apiRoute('add-user-to-mailchimp'),
@@ -497,7 +518,7 @@ class RegistrationForm extends Component {
         };
 
         const paymentDataValue = {
-          amount: 111111, 
+          amount: this.props.planId == 2? Math.round(21 * 100):Math.round(210 * 100), 
           //round is used to roundoff value with greater amount and 100 is multiplied to get the value in paise because strip save amount in paise
         };
         const { data } = await axios.post(
@@ -1175,6 +1196,13 @@ class RegistrationForm extends Component {
                   value={'$' + this.state.planPrice}
                   readOnly
                 />
+                <button
+                  variant="primary"
+                  className="mt-2"
+                  onClick={() => this.createSession(this.state.planPrice,this.state.couponReadOnly)}
+                >
+                  Buy now
+                </button>
               </div>
               <h4 className='mt-3 revamp-subtitle'>Payment Information</h4>
               <p className='mb-3 freeTrailMsg revamp-para-small black-text'>

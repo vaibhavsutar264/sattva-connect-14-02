@@ -23,6 +23,7 @@ export default class SearchComponent extends Component {
     super(props);
     this.multiselectRef = React.createRef();
     this.state = {
+      dataToVideos:[],
       mainVideoCollection:[],
       allVideosCollection:[],
       videos: [],
@@ -52,7 +53,8 @@ export default class SearchComponent extends Component {
       totalCount: 0,
       surprisemeVideo: "",
       showVideos: false,
-      allVideosKeys:[]
+      allVideosKeys:[],
+      showTypesFilters: true
     };
     this.searchValidation = new SimpleReactValidator();
     this.onChange = this.onChange.bind(this);
@@ -68,6 +70,7 @@ export default class SearchComponent extends Component {
     this.videosFSya = this.videosFSya.bind(this);
     this.toggleFilterForm = this.toggleFilterForm.bind(this);
     this.handleSearchForm = this.handleSearchForm.bind(this);
+    this.clearAllCollectionFilter = this.clearAllCollectionFilter.bind(this);
     // this.allCollection = this.allCollection.bind(this);
   }
   fetchSearchVideos = (data, videos) => {
@@ -81,6 +84,7 @@ export default class SearchComponent extends Component {
         hasMore: res.data.hasMore,
         totalCount: res.data.totalCount,
       });
+      console.log(this.state.videos);
     });
   };
 
@@ -120,51 +124,10 @@ export default class SearchComponent extends Component {
       .get(apiRoute("get-video-collection-data"), requestOptions)
       .then((res) => {
         delete res.data.live_studio
-        this.setState({ allVideosCollection: res.data,allVideosKeys:[...Object.keys(res.data)],mainVideoCollection:res.data });
-        // this.setState({ allVideosCollection: res.data,allVideosKeys:[...Object.keys(this.state.allVideosCollection)] });
+        const dataFromApi = res.data
+        this.setState({ allVideosKeys:[...Object.keys(dataFromApi)],mainVideoCollection:dataFromApi });
         console.log(this.state.allVideosCollection);
         console.log(this.state.allVideosKeys);
-        const keyscollection = [...Object.keys(this.state.allVideosCollection)]
-        console.log(Object.keys(keyscollection)[0]);
-        console.log(Object.keys(this.state.allVideosCollection));
-        console.log(this.state.allVideosCollection);
-        console.log(  
-          Object.keys(this.state.allVideosCollection).map((item,index)=>{
-            return this.state.allVideosCollection && this.state.allVideosCollection[item].map((i, inf) => {
-              return i;
-            })
-          })
-        );
-        let datareq={}
-        let finalData = []
-        const keyscollection2 = [...Object.keys(this.state.allVideosCollection)]
-            for (let index = 0; index < Object.keys(this.state.allVideosCollection).length; index++) {
-               datareq = this.state.allVideosCollection[keyscollection2[index]].map((item)=>{
-                return item
-               })
-               console.log(datareq);
-              //  for (let i = 0; i < datareq.length; i++) {
-              //   datareq.map((item)=>{
-              //     // console.log(item.title)
-              //     // return item
-              //   })
-                
-              //  }
-               
-            }
-
-            console.log(keyscollection2.map((item,index)=>{
-              datareq = this.state.allVideosCollection[keyscollection2[index]].map((item)=>{
-                return item
-               })
-               return datareq
-            }));
-
-            // console.log(...finalData)
-        // console.log(this.state.allVideosCollection.mindful_movements.map((item)=>{
-        //   return item.title
-        // }));
-        // console.log(this.state.videos);
       });
     axios
       .get(apiRoute("user-dashboard/get-all-video-teacher"), requestOptions)
@@ -503,7 +466,7 @@ export default class SearchComponent extends Component {
       selectedIntention: [],
       selectedStyle: "",
       selectedIntentionType: [],
-      allVideosCollection: mainVideoCollection
+      allVideosCollection: []
     });
     // if (this.state.selectedIntention.length > 0) {
     //   this.multiselectRef.current.resetSelectedValues();
@@ -539,7 +502,12 @@ export default class SearchComponent extends Component {
       this.filterData();
     }, 5);
   };
-
+  clearAllCollectionFilter = ()=>{
+    this.setState({
+      showTypesFilters: true,
+      allVideosCollection: [],
+    });
+  }
   loadMore = () => {
     let { si, st } = this.context;
 
@@ -613,6 +581,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -626,6 +596,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -639,6 +611,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -652,6 +626,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -665,6 +641,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -678,6 +656,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -691,6 +671,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -704,6 +686,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -717,6 +701,8 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
@@ -730,9 +716,12 @@ export default class SearchComponent extends Component {
   }, {});
   console.log(names);
   this.setState({
+    showTypesFilters: false,
+    videos:[],
     allVideosCollection: names,
   });
   }
+  
   render() {
     let {
       si,
@@ -753,7 +742,7 @@ export default class SearchComponent extends Component {
     // let {si,style,teacher,duration,intentions} = this.context;
     setTimeout(() => {
       
-      console.log(cStylesData);
+      console.log(this.state.videos);
       console.log(cFstyleId);
     }, 9000);
     return (
@@ -902,7 +891,7 @@ export default class SearchComponent extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-12 mt-5 pl-50">
+                {this.state.showTypesFilters ? <><div className="col-md-12 mt-5 pl-50">
                   <h4 className="revamp-subtitle">Browse by filters</h4>
                 </div>
                 <div className="col-md-12 pl-50 d-flex f-dir align-items-center">
@@ -1048,27 +1037,7 @@ export default class SearchComponent extends Component {
                       />
                     ) : null}
                   </div>
-                  {/* <div className="input-field revamp-filter-btn col-md-2  ">
-                    <button
-                      className="btn btn-sm btn-filter mb-4 ml-3"
-                      type="button"
-                      onClick={this.clearAllIntentions}
-                      data-html={true}
-                      data-for="custom-color-no-arrow"
-                      data-tip="Clear all filters"
-                    >
-                      Clear Filter
-                    </button>
-                    <ReactTooltip
-                      id="custom-color-no-arrow"
-                      className="react-tooltip"
-                      delayHide={1000}
-                      textColor="#FFF"
-                      backgroundColor="#000"
-                      effect="solid"
-                    />
-                  </div> */}
-                </div>
+                </div></> : ''}
                 <div className=" col-md-12 pl-50 class-block my-0 border-0 h-160">
                   {/* Cards Design */}
                   <div className="row">
@@ -1194,12 +1163,32 @@ export default class SearchComponent extends Component {
                       <div
                         className={styles.searchcards}
                       >
-                        <h1 className="quote-writer-text black-text text-center mb-3">
+                        <h1 onClick={this.videosFSya}className="quote-writer-text black-text text-center mb-3">
                           SYA
                         </h1>
                         <p className={styles.flow}>Sattva Yoga Academy</p>
                       </div>
                     </div>
+                    <div className="input-field revamp-filter-btn col-md-2  ">
+                    <button
+                      className="btn btn-sm btn-filter mb-4 ml-3"
+                      type="button"
+                      onClick={this.clearAllCollectionFilter}
+                      data-html={true}
+                      data-for="custom-color-no-arrow"
+                      data-tip="Clear all filters"
+                    >
+                      Clear Collection Filter
+                    </button>
+                    <ReactTooltip
+                      id="custom-color-no-arrow"
+                      className="react-tooltip"
+                      delayHide={1000}
+                      textColor="#FFF"
+                      backgroundColor="#000"
+                      effect="solid"
+                    />
+                  </div>
                   </div>
                   {/* Cards Design End */}
                   <h4 className="revamp-subtitle mt-3 mb-0">Search result</h4>
@@ -1217,80 +1206,47 @@ export default class SearchComponent extends Component {
                     onLoadMore={this.loadMore}
                   >
                     <div className="row serchVideos">
-                    {/* {this.state.videos.map((item, index) => {
+                    {this.state.videos.map((item, index) => {
                         return <VideoDetails item={item} key={item.id} />;
-                      })} */}
-                      {/* {
-                        Object.keys(this.state.allVideosCollection).map((item,index)=>{
-                          return this.state.allVideosCollection && this.state.allVideosCollection[item].map((i, inf) => {
-                            return <VideoDetails item={i} key={i.id} />;
-                          })
-                        })
-                      } */}
-
-                      {/* {
-                        Object.keys(this.state.allVideosCollection).map((item,index)=>{
-                          return this.state.allVideosCollection && this.state.allVideosCollection[item].map((i, inf) => {
-                            return <VideoDetails item={i} key={i.id} />;
-                          })
-                        })
-                      } */}
-                      {/* {
-                        [...Object.keys(this.state.allVideosCollection)].map((item,index)=>{
-                          let datareq = this.state.allVideosCollection[[...Object.keys(this.state.allVideosCollection)][index]].map((item)=>{
-                            return <VideoDetails item={item} key={item.id} />
-                           })
-                           return datareq
-                        })
-                      } */}
-
-                      {/* {Object.keys([...Object.keys(this.state.allVideosCollection)]).map((i,ind)=>{
-                      {this.state.allVideosCollection.mindful_movements && this.state.allVideosCollection[this.state.allVideosKeys[i] && this.state.allVideosKeys[i]].map((item, index) => {
+                      })}
+                    {/* {Object.keys([...Object.keys(this.state.allVideosCollection)]).map((i,ind)=>{ */}
+                    {this.state.allVideosCollection.mindful_movements && this.state.allVideosCollection.mindful_movements.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                    })} */}
-                    
-                      
-                      {/* {Object.keys([...Object.keys(this.state.allVideosCollection)]).map((i,ind)=>{ */}
-                        {this.state.allVideosCollection.mindful_movements && this.state.allVideosCollection[this.state.allVideosKeys[0] && this.state.allVideosKeys[0]].map((item, index) => {
+                        {this.state.allVideosCollection.find_ease && this.state.allVideosCollection.find_ease.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-
-                        {this.state.allVideosCollection.find_ease && this.state.allVideosCollection[this.state.allVideosKeys[1] && this.state.allVideosKeys[1]].map((item, index) => {
+                        {this.state.allVideosCollection.deepest_rest && this.state.allVideosCollection.deepest_rest.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.deepest_rest && this.state.allVideosCollection[this.state.allVideosKeys[2] && this.state.allVideosKeys[2]].map((item, index) => {
+                        {this.state.allVideosCollection.peaceful_minds && this.state.allVideosCollection.peaceful_minds.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.peaceful_minds && this.state.allVideosCollection[this.state.allVideosKeys[3] && this.state.allVideosKeys[3]].map((item, index) => {
+                        {this.state.allVideosCollection.live_wholly && this.state.allVideosCollection.live_wholly.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.live_wholly && this.state.allVideosCollection[this.state.allVideosKeys[4] && this.state.allVideosKeys[4]].map((item, index) => {
+                        {this.state.allVideosCollection.awaken_shakti && this.state.allVideosCollection.awaken_shakti.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.awaken_shakti && this.state.allVideosCollection[this.state.allVideosKeys[5] && this.state.allVideosKeys[5]].map((item, index) => {
+                        {this.state.allVideosCollection.breathe && this.state.allVideosCollection.breathe.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.breathe && this.state.allVideosCollection[this.state.allVideosKeys[6] && this.state.allVideosKeys[6]].map((item, index) => {
+                        {this.state.allVideosCollection.sacred_Sound && this.state.allVideosCollection.sacred_Sound.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.sacred_Sound && this.state.allVideosCollection[this.state.allVideosKeys[7] && this.state.allVideosKeys[7]].map((item, index) => {
+                        {this.state.allVideosCollection.Illuminate && this.state.allVideosCollection.Illuminate.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
-                        {this.state.allVideosCollection.Illuminate && this.state.allVideosCollection[this.state.allVideosKeys[8] && this.state.allVideosKeys[8]].map((item, index) => {
-                          return <VideoDetails item={item} key={item.id} />;
-                        })
-                      }
-                        {this.state.allVideosCollection.sya && this.state.allVideosCollection[this.state.allVideosKeys[9] && this.state.allVideosKeys[9]].map((item, index) => {
+                        {this.state.allVideosCollection.sya && this.state.allVideosCollection.sya.map((item, index) => {
                           return <VideoDetails item={item} key={item.id} />;
                         })
                       }
@@ -1300,6 +1256,9 @@ export default class SearchComponent extends Component {
                       } */}
                     </div>
                   </InfiniteScroll>
+                  <div className="row serchVideos">
+                      
+                    </div>
                   {this.state.videos.length > 0 ? null : (
                     <div className="card-panel text-center sattva-error">
                       <p>No videos found, please try again later, Thank you</p>

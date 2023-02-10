@@ -30,7 +30,7 @@ const datastripe = getStripeApiKeyOuter2()
 let dataApi = ''
 
 
-const stripePromise = loadStripe('putyourstripeid');
+const stripePromise = loadStripe('pk_test_51LVH7aSHR0RldS5SDccrBCGYL079sIp4imWCPouD9KTRFyVWbRh6vpxLSWMT71YSnYNmMOWu3JlKnw8F0yF9hOop002MmGivtw');
 
 const UserRegistration = (props) => (
   <Elements stripe={stripePromise}>
