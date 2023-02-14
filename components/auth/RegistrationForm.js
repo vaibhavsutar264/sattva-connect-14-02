@@ -25,6 +25,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { toast } from 'react-toastify';
 
 import {Elements} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -244,16 +245,25 @@ class RegistrationForm extends Component {
     this.setState({ countryCode: phoneCode });
   }
 
-  createSession = async (price) => {
-    const { data: response } = await axios.post(
-      "http://localhost:8080/subs/session",
-      {
-        price,
-      }
-    );
-    if (typeof window !== 'undefined') {
-      window.location.href = response.url;
- }
+  createSession = async (price,couponValue, emailValue,planDuration) => {
+try {
+  const { data: response } = await axios.post(
+    // "http://localhost:8080/subs/session",
+    "http://localhost:4000/api/v1/session",
+    {
+      price,
+      couponValue,
+      emailValue,
+      planDuration
+    }
+  );
+  if (typeof window !== 'undefined') {
+    window.location.href = response.url;
+}
+} catch (error) {
+  toast(error);
+}
+
     // window.location.href = response.url;
   }
 
@@ -267,6 +277,7 @@ class RegistrationForm extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+    console.log(this.state);
   }
 
   onRecaptchaChange = (e) => {
@@ -1199,7 +1210,7 @@ class RegistrationForm extends Component {
                 <button
                   variant="primary"
                   className="mt-2"
-                  onClick={() => this.createSession(this.state.planPrice,this.state.couponReadOnly)}
+                  onClick={() => this.createSession(this.state.planPrice,this.state.couponCode,this.state.email,this.state.planName)}
                 >
                   Buy now
                 </button>

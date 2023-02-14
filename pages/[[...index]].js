@@ -14,7 +14,8 @@ import axios from 'axios';
 import UpcomingStreamSlider from '../components/home/UpcomingStreamSlider';
 import TestimonialSlider from '../components/home/TestimonialSlider';
 import validator from 'validator'
-
+// import  ToastContainer  from 'react-toastify' 
+// import 'react-toastify/dist/ReactToastify.css'
 const Testimonials = dynamic(() => import('../components/home/Testimonials'), {
   ssr: false,
 });
@@ -825,10 +826,10 @@ useEffect(() => {
           
           
           
-          
         </main>
       </Layout>
       </div>
+
     </Fragment>
   );
 };

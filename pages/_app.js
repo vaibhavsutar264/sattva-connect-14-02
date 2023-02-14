@@ -1,17 +1,23 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Head from 'next/head';
 import Constants from '../constants';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { ContextSearch } from '../components/user/ContextSearch';
+import  {ToastContainer, toast}  from 'react-toastify' 
+import 'react-toastify/dist/ReactToastify.css'
 
 //Binding events.
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 function MyApp({ Component, pageProps }) {
+  useEffect(() => {
+    toast('fvfvf')
 
+  }, [])
+  
   const gonative_onesignal_info=(info)=> {
     console.log(info);
   } 
@@ -97,6 +103,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ContextSearch>
       <Component {...pageProps} />
+      <ToastContainer />
       </ContextSearch>
     </Fragment>
   );
